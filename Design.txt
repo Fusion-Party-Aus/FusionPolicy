@@ -1,0 +1,61 @@
+Pages / Stories
+    Workstream List - Member view
+        Filters by topic, status
+
+        Pending/upcoming workstreams?
+            (more like a backlog/pipeline)
+
+        PDC - Button to manage workstream
+        Button to create a new workstream
+
+    PDC - Manage Workstream
+        Transition from one stage to another
+
+    Workstream Pages/variations
+        View existing submissions
+            Comments/discussion on each submission?
+
+        Manage submission for each phase
+            Can just be a single wysiwyg
+            Locked at the end of each phase?
+                Could just be generally versioned, so the snapshot at the end of phase is preserved
+
+    Informational pages
+        PDC manual
+        Explanation of each step
+
+    Policy Register
+
+Concepts
+    User Types:
+        PDC
+        Member
+        viewer?
+
+Poldev methodology breakdown
+    Problem Identification
+        Summary assessment of the problem
+        The number of Australians likely to directly use/benefit from the policy
+        The significance of the use/benefit for these Australians?
+
+    Form PDC UP3:  Policy Desired Outcomes
+        The physical outcome that will follow from the policy.
+        Can you quantify the key outcome that is expected?
+        If the policy is implemented what are the physical changes that will be observed in Australia?
+
+
+Schema
+    Categories
+    Topics
+        category: fk
+    Workstream
+        status: string
+        topic: fk
+
+    Submission
+        user: fk
+        workstream: fk
+
+    SubmissionComments
+        user
+
