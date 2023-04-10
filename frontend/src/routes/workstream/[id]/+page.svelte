@@ -10,10 +10,10 @@
     }
 
     export let submission = {
-        summaryAssessment: '',
+        summary: '',
         benefit: '',
+        significance: '',
     }
-
 </script>
 
 <div class="w-full">
@@ -23,7 +23,7 @@
     <p class="pb-2">This form is used to report your research and analysis of the problems identified in the policy proposal. It provides a structured way to assess the scope and scale of the problem the policy is likely to attempt to resolve.</p>
     <FormRow>
         <h4>1. Your summary assessment of the problem. </h4>
-        <TextArea value={submission.summaryAssessment}></TextArea>
+        <TextArea value={submission.summary}></TextArea>
     </FormRow>
 
     <FormRow>
@@ -50,7 +50,8 @@
             (While the policy may only affect a few Australians, the benefit may be substantial, please explain).
             (If the policy is a broad or an ecological public good then please clarify the significance geographically, morally or legally)
         </small>
-        <TextArea value={submission.benefit}></TextArea>
+        <TextArea value={submission.significance}></TextArea>
     </FormRow>
+
     <button on:click={submit}>Submit</button>
 </div>
