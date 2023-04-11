@@ -1,35 +1,21 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
     import moment from 'moment';
-    import type { Moment } from 'moment';
+    import type { Workstream } from '$lib/Interfaces';
+    import { onMount } from 'svelte';
+    import {currentUser, pb } from "$lib/pocketbase"
   
-    interface Workstream {
-      id: number;
-      name: string;
-      stage: string;
-      started: Moment;
-      category: string;
-      topic: string;
-    }
-  
-    let workstreams: Workstream[] = [
-      {
-        'id': 1,
-        'name': 'Affordable housing',
-        'stage': 'Problem Identification',
-        'started': moment('2023-01-01'),
-        'category': 'Category 1',
-        'topic': 'Topic 1',
-      },
-      {
-        'id': 2,
-        'name': 'Climate Change',
-        'stage': 'Problem Identification',
-        'started': moment('2023-01-01'),
-        'category': 'Category 1',
-        'topic': 'Topic 1',
-      }
-    ];
+    let workstreams: Workstream[] = [];
+
+    onMount(async () => {
+        const data = await pb.collection('workstreams').getFullList()
+        workstreams = data.map((ws: any) => {
+            return {
+                ...ws,
+                started: moment(ws.started),
+            };
+        });
+    });
   
     const filter = writable({
       name: '',

@@ -34,6 +34,7 @@
 	"dependencies": {
 		"@gnippots/svelte-smart-forms": "^0.0.6",
 		"moment": "^2.29.4",
+		"pocketbase": "^0.13.1",
 		"tailwind-editor": "^0.2.2"
 	}
 }
