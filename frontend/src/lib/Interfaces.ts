@@ -1,5 +1,6 @@
 
 import type { Moment } from 'moment';
+
 export interface Workstream {
     id: number;
     name: string;
@@ -17,4 +18,5 @@ export interface Submission {
     summary: string,
     benefit: string,
     significance: string,
+    username?: string,
 }

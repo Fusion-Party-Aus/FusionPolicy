@@ -43,7 +43,7 @@
 
 <div class="w-full">
     {#if submission}
-    <a href="">Back</a>
+    <a href={`/workstream/${data.workstreamId}`}>Back</a>
     <h1>Workstream - {workstream?.name}</h1>
 
     <h2>Phase 1 - Problem Identification</h2>
