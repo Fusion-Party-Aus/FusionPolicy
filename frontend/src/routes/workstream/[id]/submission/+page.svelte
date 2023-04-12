@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { FormRow, Label, TextArea } from "$lib/FormComponents";
+	import { FormRow, TextArea } from "$lib/FormComponents";
     import { onMount } from 'svelte';
     import {currentUser, pb } from "$lib/pocketbase"
-    import { page } from '$app/stores'
-	import { dataset_dev } from "svelte/internal";
 	import type { Submission, Workstream } from "$lib/Interfaces.js";
-    export let data: any = {};
+    export let data: any;
 
     export let workstream: Workstream | null = null;
-    export let submission: Submission | null = null;
+    export let submission: Submission = {
+        "summary": "",
+        "benefit": "",
+        "significance": "",
+    };
 
     onMount(() => {
         pb.collection('workstreams').getOne(data.workstreamId).then((ws: any) => {
@@ -20,34 +22,35 @@
                 submission = s
             },
             async (err: any) => {
-                submission = await pb.collection('submissions').create({
-                    "user": $currentUser?.id,
-                    "workstream": data.workstreamId,
-                    "summary": "",
-                    "benefit": "",
-                    "significance": "",
-                });
+                submission.user = $currentUser?.id;
+                submission.workstream = data.workstreamId;
+                submission = await pb.collection('submissions').create(submission);
             }
         )
     });
 
-    const autoSave = () => {
-        if (submission) {
-            //pb.collection('submissions').update(submission.id, submission);
-        }
-    }
+	let debounceTimer: ReturnType<typeof setTimeout>;
+	const debouncedAutosave = () => {
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(() => {
+            if (!submission?.id) return;
+            pb.collection('submissions').update(submission.id, submission);
+
+        }, 500);
+	}
 
 </script>
 
 <div class="w-full">
+    {#if submission}
+    <a href="">Back</a>
     <h1>Workstream - {workstream?.name}</h1>
-    <p class="text-sm bg-sky-100 p-3 rounded m-3">{@html workstream?.blurb}</p>
 
     <h2>Phase 1 - Problem Identification</h2>
     <p class="pb-2">This form is used to report your research and analysis of the problems identified in the policy proposal. It provides a structured way to assess the scope and scale of the problem the policy is likely to attempt to resolve.</p>
     <FormRow>
         <h4>1. Your summary assessment of the problem. </h4>
-        <TextArea value={submission?.summary || ''}></TextArea>
+        <TextArea onChange={debouncedAutosave} bind:value={submission.summary}></TextArea>
     </FormRow>
 
     <FormRow>
@@ -65,7 +68,7 @@
                 </li>
             </ul>
         </small>
-        <TextArea value={submission?.benefit || ''}></TextArea>
+        <TextArea onChange={debouncedAutosave} bind:value={submission.benefit}></TextArea>
     </FormRow>
 
     <FormRow>
@@ -74,6 +77,7 @@
             (While the policy may only affect a few Australians, the benefit may be substantial, please explain).
             (If the policy is a broad or an ecological public good then please clarify the significance geographically, morally or legally)
         </small>
-        <TextArea value={submission?.significance || ''}></TextArea>
+        <TextArea onChange={debouncedAutosave} bind:value={submission.significance}></TextArea>
     </FormRow>
+    {/if}
 </div>

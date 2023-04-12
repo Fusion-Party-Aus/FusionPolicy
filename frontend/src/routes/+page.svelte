@@ -19,7 +19,7 @@
   
     const filter = writable({
       name: '',
-      stage: '',
+      status: '',
       started: '',
       category: '',
       topic: '',
@@ -40,58 +40,52 @@
         });
       });
     }
+
   </script>
   
   <div class="container mx-auto">
+    <h1>Current Workstreams</h1>
     <table class="table-auto w-full">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Stage</th>
-          <th>Started</th>
-          <th>Category</th>
-          <th>Topic</th>
-        </tr>
-        <tr>
           <th>
+            Name<br/>
             <input
               class="border rounded"
               type="text"
               bind:value={$filter.name}
-              placeholder="Filter by name"
             />
           </th>
-          <th>
+          <th>Stage
             <input
               class="border rounded"
               type="text"
-              bind:value={$filter.stage}
-              placeholder="Filter by stage"
+              bind:value={$filter.status}
             />
+
           </th>
           <th>
-            <input
-              class="border rounded"
-              type="date"
-              bind:value={$filter.started}
-              placeholder="Filter by started date"
-            />
+            Started
+            <br/>
+            <br/>
+
           </th>
-          <th>
+          <th>Category
+            Name<br/>
             <input
               class="border rounded"
               type="text"
               bind:value={$filter.category}
-              placeholder="Filter by category"
             />
+
           </th>
-          <th>
+          <th>Topic
             <input
               class="border rounded"
               type="text"
               bind:value={$filter.topic}
-              placeholder="Filter by topic"
             />
+
           </th>
         </tr>
       </thead>
@@ -99,10 +93,10 @@
         {#each filterWorkstreams(workstreams, $filter) as workstream (workstream.name)}
           <tr>
             <td><a href={`/workstream/${workstream.id}`}> {workstream.name}</a></td>
-            <td>{workstream.stage}</td>
+            <td>{workstream.status}</td>
             <td>{workstream.started.format('YYYY-MM-DD')}</td>
-            <td>{workstream.category}</td>
-            <td>{workstream.topic}</td>
+            <td>{workstream.categories}</td>
+            <td>{workstream.topics}</td>
           </tr>
         {/each}
       </tbody>

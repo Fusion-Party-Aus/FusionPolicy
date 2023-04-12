@@ -1,4 +1,5 @@
 <script lang="ts">
 </script>
   
-<p>Register Placeholder</p>
+<h1>Policy Register</h1>
+<p>Coming soon...</p>
