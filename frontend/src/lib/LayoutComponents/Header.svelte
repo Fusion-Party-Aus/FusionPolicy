@@ -1,7 +1,6 @@
 <script lang="ts">
     import {pb} from "$lib/pocketbase"
     import logoWhite from "$lib/img/fusion-logo-right-white.svg";
-    import { currentUser } from "$lib/pocketbase";
 
     let username: string = '';
     let password: string = '';
@@ -30,7 +29,13 @@
               class="text-white hover:text-blue-300"
             >Workstreams</a>
           </li>
-          <li>{$currentUser.username}</li>
+          <li>
+            <a
+              href="/"
+              on:click={() => pb.authStore.clear()}
+              class="text-white hover:text-blue-300 ml-4"
+            >Logout</a>
+          </li>
         </ul>
       </nav>
     </div>

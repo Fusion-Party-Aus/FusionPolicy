@@ -14,6 +14,6 @@
         </span>
     </div>
     {#if expanded}
-        <p class="mt-2 border rounded-lg border-gray-50 p-4">{text}</p>
+        <p class="mt-2 border rounded-lg border-gray-50 p-4 max-h-20 overflow-auto whitespace-pre">{text}</p>
     {/if}
 </div>

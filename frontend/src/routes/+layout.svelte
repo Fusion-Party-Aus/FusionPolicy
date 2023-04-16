@@ -4,6 +4,9 @@
   import Header from "$lib/LayoutComponents/Header.svelte";
   import { SvelteToast } from '@zerodevx/svelte-toast';
   import { currentUser } from "$lib/pocketbase";
+  export const prerender = true;
+  console.log($currentUser)
+  console.log("x);")
 </script>
 
 <div class="h-[100vh] bg-slate-300 flex flex-col">
@@ -11,7 +14,7 @@
   <Header/>
 
   <div class="flex flex-col items-center h-screen py-2">
-    <div class="w-[64rem] bg-white rounded-lg h-full p-4">
+    <div class="w-full max-w-[64rem] bg-white rounded-lg h-full p-4">
       <div class="h-full w-full overflow-auto">
         <slot></slot>
       </div>

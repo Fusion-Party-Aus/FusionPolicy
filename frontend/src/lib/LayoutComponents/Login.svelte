@@ -7,21 +7,23 @@
     let password: string = '';
 
     async function login() {
-        await pb.collection('users').authWithPassword(username, password);
+        const x = await pb.collection('users').authWithPassword(username, password);
     }
 </script>
 
 <div class="flex flex-col items-center ">
     <div class="max-w-4xl p-10 border-stone-500">
     <img src={logoColoured} alt="Fusion Logo" class="h-80 mb-10" />
-    <FormRow>
-        <Label isFor="username" >Username</Label>
-        <Input id="username" bind:value={username}/>
-    </FormRow>
-    <FormRow>
-        <Label isFor="password">Password</Label>
-        <Input id="password" type="password" bind:value={password}/>
-    </FormRow>
+    <form>
+        <FormRow>
+            <Label isFor="username" >Username</Label>
+            <Input id="username" bind:value={username}/>
+        </FormRow>
+        <FormRow>
+            <Label isFor="password">Password</Label>
+            <Input id="password" type="password" bind:value={password}/>
+        </FormRow>
     <Button onClick={login}>Login</Button>
+    </form>
     </div> 
 </div>
