@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -18,7 +18,11 @@ const config = {
 		assets: 'build',
 		fallback: null,
 		precompress: false,
-		strict: true
+		strict: true,
+		env: {
+			host: '127.0.0.1', // Change this to the desired listening address
+			port: 8080, // Change this to the desired listening port
+		  },
 		})
 	}
 };

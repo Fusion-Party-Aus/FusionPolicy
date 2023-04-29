@@ -19,16 +19,18 @@
     onMount(async() => {
         workstream = await pb.collection('workstreams').getOne(data.workstreamId)
 
-        const submission_data = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`)
+        let submission_data: Submission = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`);
 
         if (!submission_data) {
             submission.user = $currentUser?.id;
             submission.workstream = data.workstreamId;
-            submission = await pb.collection('submissions').create(submission);
+            submission_data = await pb.collection('submissions').create(submission);
         }
 
+        submission = {...submission_data}
+
         const source_data: any = await pb.collection('sources').getList(1, 50, {filter:`submission="${submission.id}"`, expand: 'user'});
-        sources = source_data.map((source: Source) => (
+        sources = source_data.items.map((source: Source) => (
             {...source}
         ))
     });
@@ -46,12 +48,14 @@
     const addSource = async () => {
         const new_source: Source = await pb.collection('sources').create({url: source_input, submission: submission.id});
         sources.push(new_source);
+        sources = sources
     }
 
 </script>
 
 <div class="w-full">
     {#if submission}
+    <p>|{submission.benefit}|</p>
     <a href={`/workstream/${data.workstreamId}`}>Back</a>
     <h1>Workstream - {workstream?.name}</h1>
 
