@@ -4,9 +4,6 @@
   import Header from "$lib/LayoutComponents/Header.svelte";
   import { SvelteToast } from '@zerodevx/svelte-toast';
   import { currentUser } from "$lib/pocketbase";
-  export const prerender = true;
-  console.log($currentUser)
-  console.log("x);")
 </script>
 
 <div class="h-[100vh] bg-slate-300 flex flex-col">

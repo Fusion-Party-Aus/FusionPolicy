@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { FormRow, TextArea } from "$lib/FormComponents";
+	import { Button, FormRow, Input, TextArea } from "$lib/FormComponents";
     import { onMount } from 'svelte';
     import {currentUser, pb } from "$lib/pocketbase"
-	import type { Submission, Workstream } from "$lib/Interfaces.js";
+	import type { Source, Submission, Workstream } from "$lib/Interfaces.js";
     export let data: any;
 
     export let workstream: Workstream | null = null;
@@ -12,21 +12,25 @@
         "significance": "",
     };
 
-    onMount(() => {
-        pb.collection('workstreams').getOne(data.workstreamId).then((ws: any) => {
-            workstream = ws
-        });
+    let sources: Source[] = []
 
-        pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`).then(
-            (s: any) => {
-                submission = s
-            },
-            async (err: any) => {
-                submission.user = $currentUser?.id;
-                submission.workstream = data.workstreamId;
-                submission = await pb.collection('submissions').create(submission);
-            }
-        )
+    let source_input = "";
+
+    onMount(async() => {
+        workstream = await pb.collection('workstreams').getOne(data.workstreamId)
+
+        const submission_data = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`)
+
+        if (!submission_data) {
+            submission.user = $currentUser?.id;
+            submission.workstream = data.workstreamId;
+            submission = await pb.collection('submissions').create(submission);
+        }
+
+        const source_data: any = await pb.collection('sources').getList(1, 50, {filter:`submission="${submission.id}"`, expand: 'user'});
+        sources = source_data.map((source: Source) => (
+            {...source}
+        ))
     });
 
 	let debounceTimer: ReturnType<typeof setTimeout>;
@@ -38,6 +42,11 @@
 
         }, 500);
 	}
+
+    const addSource = async () => {
+        const new_source: Source = await pb.collection('sources').create({url: source_input, submission: submission.id});
+        sources.push(new_source);
+    }
 
 </script>
 
@@ -78,6 +87,18 @@
             (If the policy is a broad or an ecological public good then please clarify the significance geographically, morally or legally)
         </small>
         <TextArea onChange={debouncedAutosave} bind:value={submission.significance}></TextArea>
+    </FormRow>
+    <FormRow>
+        <h4>Sources</h4>
+        <p>Your claims should be sourced, add a link to include it with your submission</p>
+        <div class="flex">
+        <Input id="source_input" bind:value={source_input} on:enter />
+        <Button onClick={addSource}></Button>
+
+        </div>
+        {#each sources as source}
+            <p>{source.url}</p>
+        {/each}
     </FormRow>
     {/if}
 </div>

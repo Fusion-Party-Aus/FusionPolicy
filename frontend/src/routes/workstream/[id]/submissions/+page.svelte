@@ -40,7 +40,6 @@
             <Expander title='Summary' text={submission.summary} />
             <Expander title='Benefit' text={submission.benefit} />
             <Expander title='Significance' text={submission.significance} />
-
           </div>
     {/each}
 </div>

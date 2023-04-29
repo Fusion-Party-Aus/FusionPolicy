@@ -20,3 +20,8 @@ export interface Submission {
     significance: string,
     username?: string,
 }
+
+export interface Source {
+    id?: string,
+    url: string
+}
