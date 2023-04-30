@@ -14,11 +14,12 @@
 
     let sources: Source[] = []
 
-    let source_input = "";
+    let sourceInput = "";
+    let loading = true;
+    let sourceSubmitting = false;
 
     onMount(async() => {
         workstream = await pb.collection('workstreams').getOne(data.workstreamId)
-
         let submission_data: Submission = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`);
 
         if (!submission_data) {
@@ -27,12 +28,13 @@
             submission_data = await pb.collection('submissions').create(submission);
         }
 
-        submission = {...submission_data}
+        submission = {...submission_data};
 
         const source_data: any = await pb.collection('sources').getList(1, 50, {filter:`submission="${submission.id}"`, expand: 'user'});
         sources = source_data.items.map((source: Source) => (
             {...source}
         ))
+        loading = false;
     });
 
 	let debounceTimer: ReturnType<typeof setTimeout>;
@@ -46,16 +48,24 @@
 	}
 
     const addSource = async () => {
-        const new_source: Source = await pb.collection('sources').create({url: source_input, submission: submission.id});
+        sourceSubmitting = true;
+        const new_source: Source = await pb.collection('sources').create({url: sourceInput, submission: submission.id});
         sources.push(new_source);
         sources = sources
+        sourceInput = "";
+        sourceSubmitting = false;
+    }
+
+    const handleSourceKeydown = (e: any) => {
+        if (e.key === 'Enter') {
+            addSource();
+        }
     }
 
 </script>
 
 <div class="w-full">
-    {#if submission}
-    <p>|{submission.benefit}|</p>
+    {#if submission && !loading}
     <a href={`/workstream/${data.workstreamId}`}>Back</a>
     <h1>Workstream - {workstream?.name}</h1>
 
@@ -95,14 +105,27 @@
     <FormRow>
         <h4>Sources</h4>
         <p>Your claims should be sourced, add a link to include it with your submission</p>
-        <div class="flex">
-        <Input id="source_input" bind:value={source_input} on:enter />
-        <Button onClick={addSource}></Button>
 
+        <div class="flex">
+            <Input id="source_input" bind:value={sourceInput} on:enter placeholder="url..." handleKeydown="{handleSourceKeydown}"/>
+            <div class="">
+            <Button disabled={sourceSubmitting} onClick={addSource}>{#if sourceSubmitting}Submitting{:else} Submit{/if}</Button>
+
+            </div>
         </div>
+
+        <table class="table-auto w-full">
+        <tbody>
         {#each sources as source}
-            <p>{source.url}</p>
+            <tr>
+                <td>{source.url}</td>
+            </tr>
         {/each}
+
+        </table>
+
     </FormRow>
+    {:else}
+        <p>Loading...</p>
     {/if}
 </div>
