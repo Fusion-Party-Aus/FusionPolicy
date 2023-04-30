@@ -1,5 +1,6 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
+    import { goto } from '$app/navigation';
     import moment from 'moment';
     import type { Workstream } from '$lib/Interfaces';
     import { onMount } from 'svelte';
@@ -91,8 +92,8 @@
       </thead>
       <tbody>
         {#each filterWorkstreams(workstreams, $filter) as workstream (workstream.name)}
-          <tr>
-            <td><a href={`/workstream/${workstream.id}`}> {workstream.name}</a></td>
+          <tr class="cursor-pointer" on:click={() => {goto(`/workstream/${workstream.id}`)}}>
+            <td>{workstream.name}</td>
             <td>{workstream.status}</td>
             <td>{workstream.started.format('YYYY-MM-DD')}</td>
             <td>{workstream.categories}</td>

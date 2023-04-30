@@ -20,15 +20,19 @@
 
     onMount(async() => {
         workstream = await pb.collection('workstreams').getOne(data.workstreamId)
-        let submission_data: Submission = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`);
 
-        if (!submission_data) {
+        let submission_data: Submission;
+
+        try {
+            submission_data = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`);
+        } catch (error) {
             submission.user = $currentUser?.id;
             submission.workstream = data.workstreamId;
             submission_data = await pb.collection('submissions').create(submission);
         }
-
         submission = {...submission_data};
+
+
 
         const source_data: any = await pb.collection('sources').getList(1, 50, {filter:`submission="${submission.id}"`, expand: 'user'});
         sources = source_data.items.map((source: Source) => (
@@ -73,7 +77,7 @@
     <p class="pb-2">This form is used to report your research and analysis of the problems identified in the policy proposal. It provides a structured way to assess the scope and scale of the problem the policy is likely to attempt to resolve.</p>
     <FormRow>
         <h4>1. Your summary assessment of the problem. </h4>
-        <TextArea onChange={debouncedAutosave} bind:value={submission.summary}></TextArea>
+        <TextArea rows={3} onChange={debouncedAutosave} bind:value={submission.summary}></TextArea>
     </FormRow>
 
     <FormRow>
@@ -91,7 +95,7 @@
                 </li>
             </ul>
         </small>
-        <TextArea onChange={debouncedAutosave} bind:value={submission.benefit}></TextArea>
+        <TextArea rows={3} onChange={debouncedAutosave} bind:value={submission.benefit}></TextArea>
     </FormRow>
 
     <FormRow>
@@ -100,7 +104,7 @@
             (While the policy may only affect a few Australians, the benefit may be substantial, please explain).
             (If the policy is a broad or an ecological public good then please clarify the significance geographically, morally or legally)
         </small>
-        <TextArea onChange={debouncedAutosave} bind:value={submission.significance}></TextArea>
+        <TextArea rows={3} onChange={debouncedAutosave} bind:value={submission.significance}></TextArea>
     </FormRow>
     <FormRow>
         <h4>Sources</h4>
