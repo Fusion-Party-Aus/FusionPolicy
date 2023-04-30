@@ -6,6 +6,7 @@ migrate((db) => {
   collection.viewRule = ""
   collection.createRule = ""
   collection.updateRule = ""
+  collection.deleteRule = ""
 
   return dao.saveCollection(collection)
 }, (db) => {
@@ -16,6 +17,7 @@ migrate((db) => {
   collection.viewRule = null
   collection.createRule = null
   collection.updateRule = null
+  collection.deleteRule = null
 
   return dao.saveCollection(collection)
 })

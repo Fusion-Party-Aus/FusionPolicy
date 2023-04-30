@@ -1,20 +1,20 @@
 migrate((db) => {
   const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("v7hv216dajbp9tb")
+  const collection = dao.findCollectionByNameOrId("hsgeni1i3zdh2ki")
 
   // update
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "zkobsext",
-    "name": "category",
+    "id": "anh8bcf6",
+    "name": "submission",
     "type": "relation",
-    "required": true,
+    "required": false,
     "unique": false,
     "options": {
-      "collectionId": "krlzoiyodh78nq9",
+      "collectionId": "57naufjkows2jm3",
       "cascadeDelete": false,
-      "minSelect": 1,
-      "maxSelect": null,
+      "minSelect": null,
+      "maxSelect": 1,
       "displayFields": []
     }
   }))
@@ -22,20 +22,20 @@ migrate((db) => {
   return dao.saveCollection(collection)
 }, (db) => {
   const dao = new Dao(db)
-  const collection = dao.findCollectionByNameOrId("v7hv216dajbp9tb")
+  const collection = dao.findCollectionByNameOrId("hsgeni1i3zdh2ki")
 
   // update
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "zkobsext",
-    "name": "field",
+    "id": "anh8bcf6",
+    "name": "submission",
     "type": "relation",
-    "required": true,
+    "required": false,
     "unique": false,
     "options": {
-      "collectionId": "krlzoiyodh78nq9",
+      "collectionId": "57naufjkows2jm3",
       "cascadeDelete": false,
-      "minSelect": 1,
+      "minSelect": null,
       "maxSelect": null,
       "displayFields": []
     }
