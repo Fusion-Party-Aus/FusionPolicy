@@ -8,10 +8,8 @@
     }
 
     $: if (toggleAll) {
-        console.log('expand');
         expanded = true
     } else {
-        console.log('close');
         expanded = false
     }
 </script>

@@ -53,11 +53,15 @@
         <button class="py-2 px-4 {selected_status === 'Implementation' ? 'border-b-2 border-indigo-500 font-semibold' : 'text-gray-500'} focus:outline-none" on:click={() => (selected_status = 'Implementation')}>Implementation</button>
     </div>
 
-    <h2>Submissions</h2>
+    <h2>
+        Submissions
+        <small class="text-xs">
+            <button class=" py-1 px-1 rounded mt-3 mr-2 focus:outline-none" on:click={expandAllExpanders}>Expand All</button>
+            <button class=" py-1 px-3 rounded mt-3 focus:outline-none" on:click={collapseAllExpanders}>Collapse All</button>
+        </small>
+    </h2>
 
 
-    <button class="bg-indigo-600 text-white py-1 px-3 rounded mt-3 mr-2 focus:outline-none" on:click={expandAllExpanders}>Expand All</button>
-    <button class="bg-indigo-600 text-white py-1 px-3 rounded mt-3 focus:outline-none" on:click={collapseAllExpanders}>Collapse All</button>
 
 
     {#each submissions as submission}
