@@ -1,9 +1,18 @@
 <script lang="ts">
     export let title = ''
     export let text = ''
+    export let toggleAll: boolean = false;
     let expanded = false
     let toggle = () => {
         expanded = !expanded
+    }
+
+    $: if (toggleAll) {
+        console.log('expand');
+        expanded = true
+    } else {
+        console.log('close');
+        expanded = false
     }
 </script>
 
