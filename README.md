@@ -17,3 +17,5 @@ cd frontend
 npm i
 npm run dev
 ```
+
+WARNING: pocketbase.ts file current points to production database (TODO: read from env file)

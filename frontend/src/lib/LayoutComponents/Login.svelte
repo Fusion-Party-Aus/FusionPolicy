@@ -7,7 +7,11 @@
     let password: string = '';
 
     async function login() {
-        const x = await pb.collection('users').authWithPassword(username, password);
+        try {
+            const x = await pb.collection('users').authWithPassword(username, password);
+        } catch (err) {
+            alert(err)
+        }
     }
 </script>
 

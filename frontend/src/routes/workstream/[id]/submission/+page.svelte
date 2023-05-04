@@ -22,6 +22,7 @@
 
     let sources: Source[] = []
 
+    import { autosaveStatus } from './autosaveStatus.js';
     let sourceInput = "";
     let loading = true;
     let sourceSubmitting = false;
@@ -34,14 +35,11 @@
         try {
             submission_data = await pb.collection('submissions').getFirstListItem(`user="${$currentUser?.id}" && workstream="${data.workstreamId}"`);
         } catch (error) {
-            console.log(error);
             submission.user = $currentUser?.id;
             submission.workstream = data.workstreamId;
             submission_data = await pb.collection('submissions').create(submission);
         }
         submission = {...submission_data};
-
-
 
         const source_data: any = await pb.collection('sources').getList(1, 50, {filter:`submission="${submission.id}"`, expand: 'user'});
         sources = source_data.items.map((source: Source) => (
@@ -51,12 +49,20 @@
     });
 
 	let debounceTimer: ReturnType<typeof setTimeout>;
-	const debouncedAutosave = () => {
-		clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(() => {
-            if (!submission?.id) return;
-            pb.collection('submissions').update(submission.id, submission);
 
+	const debouncedAutosave = () => {
+        autosaveStatus.set('unsaved');
+		clearTimeout(debounceTimer);
+		debounceTimer = setTimeout(async () => {
+            if (!submission?.id) return;
+            autosaveStatus.set('saving');
+            try {
+                await pb.collection('submissions').update(submission.id, submission);
+                autosaveStatus.set('saved');
+            } catch(err) {
+                alert(err);
+                autosaveStatus.set('failed');
+            }
         }, 500);
 	}
 
