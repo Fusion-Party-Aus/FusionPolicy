@@ -60,7 +60,7 @@
                 await pb.collection('submissions').update(submission.id, submission);
                 autosaveStatus.set('saved');
             } catch(err) {
-                alert(err);
+                alert("Something went wrong trying to autosave your submission. This is likely due to a connection issue.");
                 autosaveStatus.set('failed');
             }
         }, 500);
