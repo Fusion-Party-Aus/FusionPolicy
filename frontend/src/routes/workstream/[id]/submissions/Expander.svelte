@@ -1,6 +1,5 @@
 <script lang="ts">
     export let title = ''
-    export let text = ''
     export let toggleAll: boolean = false;
     let expanded = false
     let toggle = () => {
@@ -14,13 +13,16 @@
     }
 </script>
 
-<div class="mb-2 border rounded-lg p-1 bg-blue-200 cursor-pointer shadow-sm" on:click={toggle} on:keydown={toggle}>
-    <div class="text-lg font-semibold mb">
+<div class="mb-2 border rounded-lg p-1 bg-blue-200 shadow-sm">
+    <div class="text-lg font-semibold mb cursor-pointer" on:click={toggle} on:keydown={toggle}>
         <span class="text-lg">
             {title}
         </span>
     </div>
     {#if expanded}
-        <p class="mt-2 border rounded-lg border-gray-50 p-4 max-h-20 overflow-auto whitespace-pre">{text}</p>
+        <p class="mt-2 border rounded-lg border-gray-50 p-4 max-h-30 overflow-auto">
+            <slot>
+            </slot>
+        </p>
     {/if}
 </div>

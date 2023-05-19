@@ -25,6 +25,7 @@ export interface Submission {
     outcome_impacts: string;
     outcome_metrics: string;
     outcome_stakeholders: string;
+    sources: any[];
 }
 
 export interface Source {
