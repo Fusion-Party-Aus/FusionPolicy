@@ -30,7 +30,7 @@
             (s: any) => {
                 submissions = s.items.map((i: any) => {
                     i.username = i.expand.user.username;
-                    i.sources = i.expand['sources(submission)'];
+                    i.sources = i.expand['sources(submission)'] || [];
                     return i;
                 })
             },
