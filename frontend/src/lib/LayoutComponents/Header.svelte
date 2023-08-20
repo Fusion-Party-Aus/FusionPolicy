@@ -1,6 +1,7 @@
 <script lang="ts">
     import {pb} from "$lib/pocketbase"
     import logoWhite from "$lib/img/fusion-logo-right-white.svg";
+    import { currentUser } from "$lib/pocketbase";
 
     let username: string = '';
     let password: string = '';
@@ -19,16 +20,17 @@
         <ul class="flex items-center space-x-4">
           <li>
             <a
-              href="/register"
+              href="/"
               class="text-white hover:text-blue-300"
             >Policy Register</a>
           </li>
           <li>
             <a
-              href="/"
+              href="/workstream"
               class="text-white hover:text-blue-300"
             >Workstreams</a>
           </li>
+          {#if $currentUser}
           <li>
             <a
               href="/"
@@ -36,6 +38,7 @@
               class="text-white hover:text-blue-300 ml-4"
             >Logout</a>
           </li>
+          {/if}
         </ul>
       </nav>
     </div>

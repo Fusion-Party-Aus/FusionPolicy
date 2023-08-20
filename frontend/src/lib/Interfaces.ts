@@ -32,3 +32,31 @@ export interface Source {
     id?: string,
     url: string
 }
+
+export interface Value {
+    id: string;
+    name: string;
+}
+
+export interface Portfolio {
+    id: string;
+    name: string;
+    summary: string;
+    policies: Policy[];
+}
+
+export interface Campaign {
+    id: string;
+    name: string;
+    summary: string;
+    policies: Policy[];
+}
+
+export interface Policy {
+    id: string;
+    title: string;
+    summary: string;
+    portfolios: string[];
+    campaigns: string[];
+    values: Value[];
+}

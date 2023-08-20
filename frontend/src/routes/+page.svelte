@@ -1,106 +1,69 @@
 <script lang="ts">
-    import { writable } from 'svelte/store';
-    import { goto } from '$app/navigation';
-    import moment from 'moment';
-    import type { Workstream } from '$lib/Interfaces';
+    import type { Value, Portfolio, Campaign, Policy } from '$lib/Interfaces';
     import { onMount } from 'svelte';
-    import {currentUser, pb } from "$lib/pocketbase"
+    import {pb } from "$lib/pocketbase"
+    import Expander from './workstream/[id]/submissions/Expander.svelte';
   
-    let workstreams: Workstream[] = [];
+    let values: Value[] = [];
+    let portfolios: Portfolio[] = [];
+    let campaigns: Campaign[] = [];
+    let policies: Policy[] = [];
+
+    let arrangeBy = 'Portfolio'
+
+    let loading = true;
+
+    let displayGroups: Portfolio[] | Campaign[] = [];
 
     onMount(async () => {
-        const data = await pb.collection('workstreams').getFullList()
-        workstreams = data.map((ws: any) => {
-            return {
-                ...ws,
-                started: moment(ws.started),
-            };
-        });
-    });
-  
-    const filter = writable({
-      name: '',
-      status: '',
-      started: '',
-      category: '',
-      topic: '',
-    });
-  
-    function filterWorkstreams(workstreams: Workstream[], filter: Record<string, string>): Workstream[] {
-      return workstreams.filter((ws: Workstream) => {
-        return Object.keys(filter).every(key => {
-          const filterValue = filter[key];
-          const wsValue = ws[key as keyof Workstream];
-          if (!filterValue) return true;
+      portfolios = await pb.collection('portfolios').getFullList();
+      campaigns = await pb.collection('campaigns').getFullList();
+      policies = await pb.collection('policies').getFullList();
+      values = await pb.collection('values').getFullList();
 
-          if (key === 'started') {
-            return moment(ws[key]).isSame(moment(filter[key]), 'day');
-          } else {
-            return (wsValue as string).toLowerCase().includes(filterValue.toLowerCase());
-          }
-        });
+      campaigns = campaigns.map(campaign => {
+        campaign.policies = policies.filter(policy => policy.campaigns.includes(campaign.id));
+        return campaign;
       });
-    }
 
+      portfolios = portfolios.map(portfolio => {
+        portfolio.policies = policies.filter(policy => policy.portfolios.includes(portfolio.id));
+        return portfolio;
+      });
+
+      loading = false;
+
+    });
+
+    $: displayGroups = arrangeBy === 'Portfolio' ? portfolios : campaigns;
+  
   </script>
   
   <div class="container mx-auto">
-    <h1>Current Workstreams</h1>
-    <table class="table-auto w-full">
-      <thead>
-        <tr>
-          <th>
-            Name<br/>
-            <input
-              class="border rounded"
-              type="text"
-              bind:value={$filter.name}
-            />
-          </th>
-          <th>Stage
-            <input
-              class="border rounded"
-              type="text"
-              bind:value={$filter.status}
-            />
+    <h1>Policy Register</h1>
+    Arrange By
+    <select bind:value={arrangeBy}>
+      <option value="Portfolio">Portfolio</option>
+      <option value="Campaign">Campaign</option>
+    </select>
 
-          </th>
-          <th>
-            Started
-            <br/>
-            <br/>
+    {#if loading}
+      <p>Loading...</p>
+    {:else}
+      {#each displayGroups as displayGroup}
+        <Expander title={`${displayGroup.name} - ${displayGroup.policies.length} policies`}>
+          {#if displayGroup.summary}
+            <p>{displayGroup.summary}</p>
+          {:else}
+            <p>No Summary Provided
+          {/if}
 
-          </th>
-          <th>Category
-            Name<br/>
-            <input
-              class="border rounded"
-              type="text"
-              bind:value={$filter.category}
-            />
+          {#each displayGroup.policies as policy}
+            <p>-{policy.title}</p>
+          {/each}
+        </Expander>
+      {/each}
 
-          </th>
-          <th>Topic
-            <input
-              class="border rounded"
-              type="text"
-              bind:value={$filter.topic}
-            />
-
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each filterWorkstreams(workstreams, $filter) as workstream (workstream.name)}
-          <tr class="cursor-pointer" on:click={() => {goto(`/workstream/${workstream.id}`)}}>
-            <td>{workstream.name}</td>
-            <td>{workstream.status}</td>
-            <td>{workstream.started.format('YYYY-MM-DD')}</td>
-            <td>{workstream.categories}</td>
-            <td>{workstream.topics}</td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+    {/if}
   </div>
   
