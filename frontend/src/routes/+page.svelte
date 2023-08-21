@@ -16,6 +16,7 @@
     let displayGroups: Portfolio[] | Campaign[] = [];
 
     onMount(async () => {
+      values = await pb.collection('values').getFullList();
       portfolios = await pb.collection('portfolios').getFullList();
       campaigns = await pb.collection('campaigns').getFullList();
       policies = await pb.collection('policies').getFullList();
@@ -32,8 +33,10 @@
       });
 
       loading = false;
+    console.log(portfolios)
 
     });
+
 
     $: displayGroups = arrangeBy === 'Portfolio' ? portfolios : campaigns;
   
@@ -52,12 +55,14 @@
     {:else}
       {#each displayGroups as displayGroup}
         <Expander title={`${displayGroup.name} - ${displayGroup.policies.length} policies`}>
+          <h2>Summary</h2>
           {#if displayGroup.summary}
-            <p>{displayGroup.summary}</p>
+            {@html displayGroup.summary}
           {:else}
             <p>No Summary Provided
           {/if}
 
+          <h2>Policies</h2>
           {#each displayGroup.policies as policy}
             <p>-{policy.title}</p>
           {/each}
