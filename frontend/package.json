@@ -39,6 +39,7 @@
 		"moment": "^2.29.4",
 		"pocketbase": "^0.13.1",
 		"svelte-icons": "^2.1.0",
+		"svelte-multiselect": "^10.1.0",
 		"tailwind-editor": "^0.2.2",
 		"typewriter-editor": "^0.7.16"
 	}

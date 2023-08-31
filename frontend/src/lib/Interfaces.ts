@@ -41,6 +41,7 @@ export interface Value {
 export interface Portfolio {
     id: string;
     name: string;
+    blurb: string;
     summary: string;
     policies: Policy[];
 }
@@ -48,6 +49,7 @@ export interface Portfolio {
 export interface Campaign {
     id: string;
     name: string;
+    blurb: string;
     summary: string;
     policies: Policy[];
 }
