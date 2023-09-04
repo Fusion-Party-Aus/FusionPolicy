@@ -2,17 +2,13 @@
     import type { Value, Portfolio, Campaign, Policy } from '$lib/Interfaces';
     import MultiSelect from 'svelte-multiselect'
     import { onMount } from 'svelte';
-    import {pb } from "$lib/pocketbase"
     import PolicyCard from '$lib/PolicyComponents/PolicyCard.svelte';
     import { fade } from 'svelte/transition';
     import {flip} from 'svelte/animate';
     import Expander from './workstream/[id]/submissions/Expander.svelte';
-  
-    let values: Value[] = [];
-    let portfolios: Portfolio[] = [];
-    let campaigns: Campaign[] = [];
-    let policies: Policy[] = [];
+    import type { PageData } from './$types';
 
+    export let data: PageData;
     let filteredPolicies: Policy[] = [];
 
     let arrangeBy = 'Policy'
@@ -24,28 +20,13 @@
 
 
     onMount(async () => {
-      values = await pb.collection('values').getFullList();
-      portfolios = await pb.collection('portfolios').getFullList();
-      campaigns = await pb.collection('campaigns').getFullList();
-      policies = await pb.collection('policies').getFullList();
-      values = await pb.collection('values').getFullList();
-
-      campaigns = campaigns.map(campaign => {
-        campaign.policies = policies.filter(policy => policy.campaigns.includes(campaign.id));
-        return campaign;
-      });
-
-      portfolios = portfolios.map(portfolio => {
-        portfolio.policies = policies.filter(policy => policy.portfolios.includes(portfolio.id));
-        return portfolio;
-      });
 
       loading = false;
 
     });
 
 
-    $: filteredPolicies = policies.filter(policy => {
+    $: filteredPolicies = data.policies.filter(policy => {
       if (filterByPortfolio.length > 0) {
         if (!policy.portfolios.some(portfolio => filterByPortfolio.map(p => p.value).includes(portfolio))) {
           return false;
@@ -83,7 +64,7 @@
       <p class="text-xl">Loading...</p>
     {:else}
       {#if arrangeBy === 'Portfolio'}
-        {#each portfolios as portfolio}
+        {#each data.portfolios as portfolio}
           <Expander title={`${portfolio.name} - ${portfolio.policies.length} policies`}>
             <h2>Summary</h2>
             {#if portfolio.summary}
@@ -100,7 +81,7 @@
         {/each}
       {:else if arrangeBy === 'Campaign'}
         <div class="grid gap-4 md:grid-cols-3">
-          {#each campaigns as campaign}
+          {#each data.campaigns as campaign}
               <div class="p-4 border rounded">
                   <PolicyCard item={campaign}></PolicyCard>
               </div>
@@ -110,14 +91,14 @@
       {:else if arrangeBy === 'Policy'}
         <div class="flex space-x-4 mb-6">
           <span class="text-xl">Filter by Portfolio:</span>
-          <MultiSelect bind:selected={filterByPortfolio} options={portfolios.map((p) => ({label: p.name, value: p.id}))} />
+          <MultiSelect bind:selected={filterByPortfolio} options={data.portfolios.map((p) => ({label: p.name, value: p.id}))} />
         </div>
         <div class="flex space-x-4 mb-6">
             <span class="text-xl">Filter by Campaign:</span>
-            <MultiSelect bind:selected={filterByCampaign} options={campaigns.map((c) => ({label: c.name, value: c.id}))} />
+            <MultiSelect bind:selected={filterByCampaign} options={data.campaigns.map((c) => ({label: c.name, value: c.id}))} />
         </div>
 
-        <div class="grid gap-4 md:grid-cols-3">
+        <div class="grid gap-4">
             {#each filteredPolicies as policy (policy.id)}
                 <div class="p-4 border rounded" in:fade animate:flip={{duration: 200}}>
                     <p class="text-xl">{policy.title}</p>

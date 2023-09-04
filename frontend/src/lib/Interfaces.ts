@@ -46,12 +46,19 @@ export interface Portfolio {
     policies: Policy[];
 }
 
+
 export interface Campaign {
     id: string;
     name: string;
     blurb: string;
     summary: string;
-    policies: Policy[];
+    policy_groups: Policy[];
+}
+
+export interface PolicyGroup {
+    title: string;
+    summary: string;
+    campaigns: string[]
 }
 
 export interface Policy {
