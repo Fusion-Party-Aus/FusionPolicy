@@ -18,13 +18,9 @@
     let filterByValue: { label: string, value: string }[] = [];
     let filterByTopic: { label: string, value: string }[] = [];
 
-
     onMount(async () => {
-
       loading = false;
-
     });
-
 
     $: filteredPolicies = data.policies.filter(policy => {
       if (filterByPortfolio.length > 0) {

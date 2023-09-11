@@ -19,9 +19,10 @@ export const load: LayoutData = async () => {
 	});
 
 	portfolios = portfolios.map((portfolio) => {
-		portfolio.policies = policies.filter((policy) => policy.campaigns &&  policy.portfolios.includes(portfolio.id));
+		portfolio.policies = policies.filter((policy) => policy.portfolios &&  policy.portfolios.includes(portfolio.id));
 		return portfolio;
 	});
+
 	return {
         campaigns,
         portfolios,
