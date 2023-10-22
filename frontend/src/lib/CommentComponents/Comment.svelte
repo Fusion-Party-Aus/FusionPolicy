@@ -13,6 +13,7 @@
         if (existing_like) {
             await pb.collection('comment_likes').update(existing_like.id, {"active": !existing_like.active});
             existing_like.active = !existing_like.active
+            comment.likes = [...comment.likes];
             return
         }
 
