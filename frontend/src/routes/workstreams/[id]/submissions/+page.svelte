@@ -44,8 +44,8 @@
 {#if workstream && selected_status}
 
 <div class="w-full">
-    <a href={`/workstream/${data.workstreamId}`}>Back</a>
-    <h1>Workstream - {workstream?.name}</h1>
+    <a href={`/workstreams/${data.workstreamId}`}>Back</a>
+    <h1>Workstream - {workstream?.title}</h1>
 
     <div class="flex mb-6 border-b border-gray-300">
         <button class="py-2 px-4 {selected_status === 'Problem Identification' ? 'border-b-2 border-indigo-500 font-semibold' : 'text-gray-500'} focus:outline-none" on:click={() => (selected_status = 'Problem Identification')}>Problem Identification</button>

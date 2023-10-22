@@ -36,7 +36,9 @@
 	"dependencies": {
 		"@gnippots/svelte-smart-forms": "^0.0.6",
 		"bytemd": "^1.21.0",
+		"jsdom": "^22.1.0",
 		"moment": "^2.29.4",
+		"node-fetch": "^3.3.2",
 		"pocketbase": "^0.13.1",
 		"svelte-icons": "^2.1.0",
 		"svelte-multiselect": "^10.1.0",

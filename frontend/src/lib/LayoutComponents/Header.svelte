@@ -25,8 +25,15 @@
             >Policy Register</a>
           </li>
           <li>
+          <li>
             <a
-              href="/workstream"
+              href="/intake"
+              class="text-white hover:text-blue-300"
+            >Intake</a>
+          </li>
+          <li>
+            <a
+              href="/workstreams"
               class="text-white hover:text-blue-300"
             >Workstreams</a>
           </li>

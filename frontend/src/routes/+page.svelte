@@ -5,7 +5,7 @@
     import PolicyCard from '$lib/PolicyComponents/PolicyCard.svelte';
     import { fade } from 'svelte/transition';
     import {flip} from 'svelte/animate';
-    import Expander from './workstream/[id]/submissions/Expander.svelte';
+    import Expander from './workstreams/[id]/submissions/Expander.svelte';
     import type { PageData } from './$types';
 
     export let data: PageData;

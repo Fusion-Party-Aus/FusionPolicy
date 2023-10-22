@@ -85,7 +85,7 @@
 
 <div class="w-full">
     {#if submission && workstream && !loading}
-    <a href={`/workstream/${data.workstreamId}`}>Back</a>
+    <a href={`/workstreams/${data.workstreamId}`}>Back</a>
     <h1>Workstream - {workstream?.name}</h1>
 
     {#if workstream.status === 'Problem Identification'}
@@ -101,7 +101,7 @@
         <p>Your claims should be sourced, add a link to include it with your submission</p>
 
         <div class="flex">
-            <Input id="source_input" bind:value={sourceInput} on:enter placeholder="url..." handleKeydown="{handleSourceKeydown}"/>
+            <Input id="source_input" bind:value={sourceInput} on:enter placeholder="url..." onKeydown="{handleSourceKeydown}"/>
             <div class="">
             <Button disabled={sourceSubmitting} onClick={addSource}>{#if sourceSubmitting}Submitting{:else} Submit{/if}</Button>
 

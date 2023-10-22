@@ -1,61 +1,72 @@
-Pages / Stories
-    Workstream List - Member view
-        Filters by topic, status
+Intake flows
+    Comment on an article or other link
+        User submits link
+        Decision made to work on it
+            Response provided to user either way
+        'Take draft' created
+        Any users can comment take
+        Comms users collaborate on 'official take'
+        Take is approved an can be pushed to social media platforms
+        Can be turned into a policy workstream
 
-        Pending/upcoming workstreams?
-            (more like a backlog/pipeline)
+    Include this information in our policy
+        PDC users review and accept or declien
+        Acceptance creates ExternalResource record
+            Can be tagged against topics, portfolios, values and policies
+    
+    Request/suggest a policy on this topic
+        Creates a policy request
+        Can be commented on by users
+        Can be turned into a policy workstream
 
-        PDC - Button to manage workstream
-        Button to create a new workstream
+Content Types
+    Social post
+    Blog
+    Position Statement
+    Policy
 
-    PDC - Manage Workstream
-        Transition from one stage to another
-
-    Workstream Pages/variations
-        View existing submissions
-            Comments/discussion on each submission?
-
-        Manage submission for each phase
-            Can just be a single wysiwyg
-            Locked at the end of each phase?
-                Could just be generally versioned, so the snapshot at the end of phase is preserved
-
-    Informational pages
-        PDC manual
-        Explanation of each step
-
-    Policy Register
-
-Concepts
-    User Types:
-        PDC
-        Member
-        viewer?
-
-Poldev methodology breakdown
-    Problem Identification
-        Summary assessment of the problem
-        The number of Australians likely to directly use/benefit from the policy
-        The significance of the use/benefit for these Australians?
-
-    Form PDC UP3:  Policy Desired Outcomes
-        The physical outcome that will follow from the policy.
-        Can you quantify the key outcome that is expected?
-        If the policy is implemented what are the physical changes that will be observed in Australia?
-
-
-Schema
-    Categories
-    Topics
-        category: fk
-    Workstream
-        status: string
-        topic: fk
-
-    Submission
-        user: fk
-        workstream: fk
-
-    SubmissionComments
+Models
+    WorkstreamSuggestion
+        id
         user
+        link
+        additional_information
+        status
+        response
 
+    SocialPostWorkstream
+        id
+        suggestion_id
+        link
+        content
+        status
+
+    BlogPostWorkstream
+        id
+        suggestion_id
+        content
+        authors
+
+    PositionStatementWorkstream
+        id
+        suggestion_id
+        content
+
+    WorkstreamComment
+        id
+        take_id
+
+    ExternalResource
+        id
+        suggestion_id
+
+Pages
+    Workstreams
+        Add the other types of records other than policy workstreams
+            Suggestions
+            Blog
+
+
+
+Policy Development Flows
+    Workstream is created
