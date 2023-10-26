@@ -4,6 +4,7 @@
     import type { PolicyWorkstream, ContentWorkstream, WorkstreamSuggestion, Workstream } from '$lib/Interfaces';
     import { onMount } from 'svelte';
     import {getFullList, pb } from "$lib/pocketbase"
+	import { Button } from '$lib/FormComponents';
   
     let policyWorkstreams: PolicyWorkstream[] = [];
     let contentWorkstreams: ContentWorkstream[] = [];
@@ -47,11 +48,16 @@
     function isWorkstreamSuggestion(workstream: Workstream): workstream is WorkstreamSuggestion {
       return (workstream as ContentWorkstream).collectionName == 'workstream_suggestions'
     }
-
   </script>
+
   
   <div class="container mx-auto">
-    <h1>Current Workstreams</h1>
+    <div class="flex justify-between">
+      <h1 class="inline">Current Workstreams</h1>
+      <div class="w-200">
+        <Button onClick={() => { goto("/intake") } }>Suggest a new workstream</Button>
+      </div>
+    </div>
     <table class="table-auto w-full">
       <thead>
         <tr>
@@ -60,7 +66,6 @@
           <th>Status</th>
           <th>Comments</th>
           <th>Last Activity</th>
-          <th>Tags</th>
         </tr>
       </thead>
       <tbody>
@@ -68,10 +73,9 @@
           {#if isPolicyWorkstream(workstream)}
             <tr class="cursor-pointer" on:click={() => {goto(`/policy_workstream/${workstream.id}`)}}>
               <td>{workstream.name}</td>
+              <td>TODO</td>
               <td>Policy: {workstream.status}</td>
-              <td>TODO</td>
-              <td>TODO</td>
-              <td>TODO</td>
+              <td>-</td>
               <td>TODO</td>
             </tr>
           {:else if isContentWorkstream(workstream)}
@@ -81,15 +85,13 @@
               <td>{workstream.comments.length}</td>
               <td>TODO</td>
               <td>TODO</td>
-              <td>TODO</td>
             </tr>
           {:else if isWorkstreamSuggestion(workstream)}
             <tr class="cursor-pointer" on:click={() => {goto(`/workstream_suggestion/${workstream.id}`)}}>
               <td>{workstream.type}</td>
+              <td>TODO</td>
               <td>{workstream.status}</td>
               <td>{workstream.comments.length}</td>
-              <td>TODO</td>
-              <td>TODO</td>
               <td>TODO</td>
             </tr>
           {/if}

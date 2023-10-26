@@ -8,6 +8,11 @@
     export let handleSubmit: (content: string, parent?: string) => void;
     let activeLikes: number = 0
 
+    const submitAndClose = (content: string, parent?: string): void => {
+        handleSubmit(content, parent);
+        showReply = false;
+    }
+
     const toggleLike = async () => {
         const existing_like = comment.likes?.find(() => comment.user.id === $currentUser?.id)
         if (existing_like) {
@@ -39,7 +44,7 @@
     </div>
 
     {#if showReply}
-        <CommentInput handleSubmit={handleSubmit} parent={comment.id}></CommentInput>
+        <CommentInput handleSubmit={submitAndClose} parent={comment.id}></CommentInput>
     {/if}
 
     {#if comment?.children && comment.children.length > 0}
