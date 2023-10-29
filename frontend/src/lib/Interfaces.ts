@@ -116,13 +116,14 @@ export interface Campaign {
     name: string;
     blurb: string;
     summary: string;
-    policy_groups: Policy[];
+    policy_groups: PolicyGroup[];
 }
 
 export interface PolicyGroup {
     title: string;
     summary: string;
     campaigns: string[]
+    policies: Policy[];
 }
 
 export interface Policy {

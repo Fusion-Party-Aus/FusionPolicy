@@ -88,7 +88,7 @@
             </tr>
           {:else if isWorkstreamSuggestion(workstream)}
             <tr class="cursor-pointer" on:click={() => {goto(`/workstream_suggestion/${workstream.id}`)}}>
-              <td>{workstream.type}</td>
+              <td>{workstream.title}</td>
               <td>TODO</td>
               <td>{workstream.status}</td>
               <td>{workstream.comments.length}</td>

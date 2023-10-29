@@ -15,6 +15,7 @@
     <div class="container mx-auto px-4 py-2 flex items-center justify-between">
       <div class="text-white text-2xl font-bold">
         <img src={logoWhite} alt="Fusion Logo" class="h-8" />
+        <span class="text-xs">This site is currently under development. Content may not be fully endorsed by Fusion</span>
       </div>
       <nav>
         <ul class="flex items-center space-x-4">

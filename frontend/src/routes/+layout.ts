@@ -10,6 +10,7 @@ export const load: LayoutData = async () => {
 
 	policy_groups = policy_groups.map((policy_group) => {
 		policy_group.policies = policies.filter((policy) => policy.policy_groups && policy.policy_groups.includes(policy_group.id));
+		console.log(policy_group.title, policy_group.policies.length)
 		return policy_group;
 	});
 
