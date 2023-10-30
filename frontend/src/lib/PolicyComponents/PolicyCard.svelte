@@ -1,20 +1,29 @@
 <script lang="ts">
-    import type { Value, Portfolio, Campaign, Policy } from '$lib/Interfaces';
-    export let item: Portfolio | Campaign;
+    import type { Policy } from '$lib/Interfaces';
+    export let policy: Policy; 
+    let expanded = false;
 </script>
 
-<div class="p-3 border border-gray-200 rounded-lg shadow-md">
-    <div class="h-32 align-bottom bg-slate-600 p-3">
-        <h2 class="relative text-white">{item.name}</h2>
-    </div>
+<div class="pb-3 px-3 my-2 border rounded border-gray-200 bg-gray-50">
+    <h3>
+        {policy.title}
+    </h3>
+    {#if policy.summary}
+        {@html policy.summary}
+    {/if}
 
-    <div class="max-h-96 overflow-hidden">
-        {#if item.summary}
-            {@html item.summary}
+    {#if policy.details}
+        {#if expanded}
+            <p class="text-x">
+                {@html policy.details}
+            </p>
+            <button class="text-sm text-blue-500" on:click={() => expanded = false}>
+                Show less
+            </button>
         {:else}
-            <p>No Summary Provided</p>
+            <button class="text-sm text-blue-500" on:click={() => expanded = true}>
+                Show more
+            </button>
         {/if}
-    </div>
-    <a href="campaign/{item.id}">Read more</a>
-
+    {/if}
 </div>

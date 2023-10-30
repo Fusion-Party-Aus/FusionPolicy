@@ -131,6 +131,7 @@ export interface Policy {
     title: string;
     summary: string;
     portfolios: string[];
+    details: string[];
     campaigns: string[];
     values: Value[];
 }

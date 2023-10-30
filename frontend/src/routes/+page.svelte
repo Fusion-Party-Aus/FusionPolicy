@@ -2,7 +2,7 @@
     import type { Value, Portfolio, Campaign, Policy } from '$lib/Interfaces';
     import MultiSelect from 'svelte-multiselect'
     import { onMount } from 'svelte';
-    import PolicyCard from '$lib/PolicyComponents/PolicyCard.svelte';
+    import ContentGroup from '$lib/PolicyComponents/ContentGroup.svelte';
     import { fade } from 'svelte/transition';
     import {flip} from 'svelte/animate';
     import Expander from './workstreams/[id]/submissions/Expander.svelte';
@@ -79,7 +79,7 @@
         <div class="grid gap-4 md:grid-cols-3">
           {#each data.campaigns as campaign}
               <div class="p-4 border rounded">
-                  <PolicyCard item={campaign}></PolicyCard>
+                  <ContentGroup item={campaign}></ContentGroup>
               </div>
           {/each}
         </div>
