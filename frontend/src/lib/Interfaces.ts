@@ -33,14 +33,12 @@ export interface WorkstreamComment extends PBBase {
 }
 
 export interface WorkstreamContentVersions extends PBBase {
-    id?: string;
     user: User;
     plain_text: string;
     rich_text: string;
 }
 
 export interface ContentWorkstream extends PBBase {
-    id?: string
     title: string;
     type: string;
     status: string;
@@ -77,7 +75,6 @@ export type Workstream = ContentWorkstream | PolicyWorkstream | WorkstreamSugges
 
 
 export interface Submission extends PBBase {
-    id?: string;
     user: User;
     workstream?: string;
     summary: string;
@@ -92,17 +89,16 @@ export interface Submission extends PBBase {
     sources: any[];
 }
 
-export interface Source {
-    id?: string,
+export interface Source extends PBBase {
     url: string
 }
 
-export interface Value {
+export interface Value extends PBBase {
     id: string;
     name: string;
 }
 
-export interface Portfolio {
+export interface Portfolio extends PBBase {
     id: string;
     name: string;
     blurb: string;
@@ -111,27 +107,33 @@ export interface Portfolio {
 }
 
 
-export interface Campaign {
+export interface Campaign extends PBBase {
     id: string;
     name: string;
     blurb: string;
     summary: string;
     policy_groups: PolicyGroup[];
+    order: number;
+    active: boolean;
 }
 
-export interface PolicyGroup {
+export interface PolicyGroup extends PBBase {
     title: string;
     summary: string;
     campaigns: string[]
     policies: Policy[];
+    order: number;
+    active: boolean;
 }
 
-export interface Policy {
-    id: string;
+export interface Policy extends PBBase {
     title: string;
     summary: string;
     portfolios: string[];
     details: string[];
     campaigns: string[];
     values: Value[];
+    policy_groups: string[];
+    order: number
+    active: boolean;
 }

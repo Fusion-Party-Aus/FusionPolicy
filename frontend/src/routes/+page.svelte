@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Value, Portfolio, Campaign, Policy } from '$lib/Interfaces';
+    import type { Portfolio, Campaign, Policy } from '$lib/Interfaces';
     import MultiSelect from 'svelte-multiselect'
     import { onMount } from 'svelte';
     import ContentGroup from '$lib/PolicyComponents/ContentGroup.svelte';
@@ -10,38 +10,43 @@
 
     export let data: PageData;
     let filteredPolicies: Policy[] = [];
+    let filteredCampaigns: Campaign[] = [];
 
-    let arrangeBy = 'Policy'
+    let arrangeBy = 'Campaign'
     let loading = true;
-    let filterByPortfolio: { label: string, value: string }[] = [];
-    let filterByCampaign: { label: string, value: string }[] = [];
-    let filterByValue: { label: string, value: string }[] = [];
-    let filterByTopic: { label: string, value: string }[] = [];
+    let selectedPortfolios: { label: string, value: string }[] = [];
+    let selectedCampaigns: { label: string, value: string }[] = [];
 
     onMount(async () => {
       loading = false;
     });
 
+    $: filteredCampaigns = data.campaigns.filter(campaign => selectedCampaigns.map(c => c.value).includes(campaign.id))
+
     $: filteredPolicies = data.policies.filter(policy => {
-      if (filterByPortfolio.length > 0) {
-        if (!policy.portfolios.some(portfolio => filterByPortfolio.map(p => p.value).includes(portfolio))) {
+      if (selectedPortfolios.length > 0) {
+        if (!policy.portfolios.some((portfolio: Portfolio) => selectedPortfolios.map(p => p.value).includes(portfolio))) {
           return false;
         }
       }
 
-      if (filterByCampaign.length > 0) {
-        if (!policy.campaigns.some(campaign => filterByCampaign.map(c => c.value).includes(campaign))) {
+      if (selectedCampaigns.length > 0) {
+        // Find a campaign in filteredCampaigns that contains a policy_group with that exists in policy.policy_group
+        if (!policy.policy_groups.some(
+          (policyGroupId: string) => filteredCampaigns.some(
+            campaign => {
+              const policyGroupIDs = campaign.policy_groups.map(pg => pg.id)
+              return policyGroupIDs.includes(policyGroupId);
+            }
+          )
+        )) {
           return false;
         }
       }
 
-      if (filterByValue.length > 0) {
-        if (!policy.values.some(value => filterByValue.map(v => v.value).includes(value))) {
-          return false;
-        }
-      }
       return true;
     });
+
   
   </script>
   
@@ -87,11 +92,11 @@
       {:else if arrangeBy === 'Policy'}
         <div class="flex space-x-4 mb-6">
           <span class="text-xl">Filter by Portfolio:</span>
-          <MultiSelect bind:selected={filterByPortfolio} options={data.portfolios.map((p) => ({label: p.name, value: p.id}))} />
+          <MultiSelect bind:selected={selectedPortfolios} options={data.portfolios.map((p) => ({label: p.name, value: p.id}))} />
         </div>
         <div class="flex space-x-4 mb-6">
             <span class="text-xl">Filter by Campaign:</span>
-            <MultiSelect bind:selected={filterByCampaign} options={data.campaigns.map((c) => ({label: c.name, value: c.id}))} />
+            <MultiSelect bind:selected={selectedCampaigns} options={data.campaigns.map((c) => ({label: c.name, value: c.id}))} />
         </div>
 
         <div class="grid gap-4">
